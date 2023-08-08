@@ -26,12 +26,12 @@ void setup() {
   irdaikin.on();
   irdaikin.setSwing_on();
   irdaikin.setMode(1);
-  irdaikin.setFan(5);//FAN speed to MAX
+  irdaikin.setFan(4);//FAN speed to MAX
   irdaikin.setTemp(18);
   display.setBrightness(3);
   irdaikin.sendCommand();
   isOn = 1;
-  onoff_delay = 60;
+  onoff_delay = 40;
   cycles = onoff_delay;
 
   // display
@@ -50,6 +50,7 @@ void setup() {
 void set_on(int condition){
   isOn = 1;
   irdaikin.setTemp(18);
+  irdaikin.setFan(4);//FAN speed to MAX
   // delay(1000*onoff_delay);
   irdaikin.sendCommand();
 }
@@ -57,27 +58,28 @@ void set_on(int condition){
 void set_off(int condition){
   isOn = 0;
   irdaikin.setTemp(32);
+  irdaikin.setFan(0);
   // delay(1000*onoff_delay);
   irdaikin.sendCommand();
 }
 
 void ac_control(float h, float t, float hic){
-  if (hic > 30.0 && ~isOn){
+  if (hic > 30.0){
     set_on(0);
   }
-  else if (h > 70.0 && ~isOn && t > 25){
+  else if (h > 70.0 && t > 25){
     set_on(1);
   }
-  else if (h > 55.0 && ~isOn && t > 27){
+  else if (h > 55.0 && t > 27){
     set_on(2);
   }
-  else if (h > 65.0 && ~isOn && t > 26.5){
+  else if (h > 65.0 && t > 26.5){
     set_on(3);
   }
-  else if (hic < 28.0 && isOn){
+  else if (hic < 28.0){
     set_off(4);
   }
-  else if (t < 25 && isOn){
+  else if (t < 25){
     set_off(5);
   }
   // else{
